@@ -4,11 +4,7 @@ import 'antd/dist/antd.css';
 
 function AddPlace({ open, onCreate, onCancel }) {
 
-    const [form] = Form.useForm();
-
-    useEffect(() => {
-        console.log('modal should render');
-    }, [open]);
+  const [form] = Form.useForm();
 
   return (
     <Modal
@@ -17,7 +13,7 @@ function AddPlace({ open, onCreate, onCancel }) {
         okText="Create"
         cancelText="Cancel"
         onCancel={onCancel}
-        onCreate={() => {
+        onOk={() => {
           form
             .validateFields()
             .then((values) => {

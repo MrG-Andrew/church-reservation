@@ -4,6 +4,7 @@ import styles from './Landing.module.css'
 import {PlusCircleOutlined, MinusCircleOutlined} from '@ant-design/icons';
 import AddPlace from '../AddPlace/AddPlace';
 import 'antd/dist/antd.css';
+import LoginModal from '../Login/LoginModal';
 
 
 const {Search} = Input
@@ -11,21 +12,23 @@ const {Search} = Input
 function Landing() {
 
     const [content, setContent] = useState(0)
-    const [open, setOpen] = useState(false)
-    const onCreate = () => {
-        setOpen(false);
+    const [openAddPlace, setOpenAddPlace] = useState(false)
+    const [openLogin, setOpenLogin] = useState(true)
+
+    const onCreate = (values) => {
+        console.log(values);
+        setOpenAddPlace(false);
+        setContent(prev=>prev+1)
     }
-    let modalContent;
-    if(open){
-        modalContent = <AddPlace open={open} onCreate={onCreate} onCancel={()=>setOpen(false)}/>
-    }else{
-        modalContent = null
+
+    const onCancelAddPlace = ()=>{
+        setOpenAddPlace(false)
     }
 
     const plusBtn = ()=>{
-        setContent(prev=>prev+1)
-        console.log(open);
-        setOpen(!open)
+        // setContent(prev=>prev+1)
+        // console.log(openAddPlace);
+        setOpenAddPlace(!openAddPlace)
     }
 
   return (
@@ -49,7 +52,8 @@ function Landing() {
                 </div>
             ))}
         </div>
-        {modalContent}
+        <AddPlace open={openAddPlace} onCreate={onCreate} onCancel={()=>onCancelAddPlace()}/>
+        <LoginModal open={openLogin} setOpenLogin={setOpenLogin}/>
     </div>
   )
 }

@@ -1,0 +1,15 @@
+.formItemRemember{
+    display: flex !important;
+    justify-content: space-between !important;
+}
+
+.rememberMe{
+}
+
+.forgetPass{
+    justify-content: flex-end;
+}
+
+.formItemBtn{
+    margin: 0 !important;
+}
