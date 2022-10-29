@@ -6,10 +6,9 @@ import './App.css'
 function App() {
 
   return (
-    <div className='container-login100 backgroundImage'>
+    <div className='container-login100 backgroundImage widthFirstChild'>
 
 
-      {/* <Login/> */}
       <Landing/>
 
       

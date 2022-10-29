@@ -9,7 +9,7 @@ function AddPlace({ open, onCreate, onCancel }) {
   return (
     <Modal
         open={open}
-        title="Create a new collection"
+        title="Add Location"
         okText="Create"
         cancelText="Cancel"
         onCancel={onCancel}
