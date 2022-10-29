@@ -1,0 +1,35 @@
+.searchBox{
+    /* border: 1px solid black; */
+    width: 100%;
+}
+
+.pointerHover:hover{
+    cursor: pointer;
+}
+
+.locationsContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* overflow-x: scroll; */
+}
+
+.card{
+    width: 100px;
+    height: 100px;
+    background-color: #b6b6b6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2%;
+}
+
+.plusIcon{
+    font-size: 1.5rem;
+    color: rgb(20, 197, 228);
+}
+
+.minusIcon{
+    font-size: 1.5rem;
+    color: rgb(228, 20, 72);
+}
