@@ -1,11 +1,18 @@
-.iconsContainer{
+.iconsAndNameContainer{
     display: flex;
-    flex-direction: row-reverse;
-    padding-bottom: 1rem;
+    justify-content: space-between;
+    flex-wrap: wrap-reverse;
+}
+
+.iconsContainer{
+
+}
+
+.usernameContainer{
+
 }
 
 .searchBox{
-    /* border: 1px solid black; */
     width: 100%;
 }
 
@@ -17,7 +24,6 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    /* overflow-x: scroll; */
 }
 
 .card{

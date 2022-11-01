@@ -7,10 +7,10 @@ import {PlusCircleOutlined,
         PlusOutlined, 
         UserOutlined } from '@ant-design/icons';
 import AddPlace from '../AddPlace/AddPlace';
-import 'antd/dist/antd.css';
 import LoginModal from '../Login/LoginModal';
 import Notifications from '../Notifications/Notifications';
 import AddUser from '../AddUser/AddUser';
+import Users from '../Users/Users';
 
 
 const {Search} = Input
@@ -22,6 +22,15 @@ function Landing() {
     const [openLogin, setOpenLogin] = useState(true)
     const [showAddUserModal, setShowAddUserModal] = useState(false)
     const [showNotificationsModal, setShowNotificationsModal] = useState(false)
+    const [loginData, setLoginData] = useState({
+        username:'',
+        password:''
+    })
+    const [showUsers, setShowUsers] = useState(false)
+    const [placeData, setPlaceData] = useState({
+        picture:'',
+        name:'',
+    })
 
     const onCreate = (values) => {
         setOpenAddPlace(false);
@@ -44,25 +53,30 @@ function Landing() {
         setShowNotificationsModal(!showNotificationsModal)
     }
 
-    const showUsers = ()=>{
-
+    const showUsersTable = ()=>{
+        setShowUsers(!showUsers)
     }
 
   return (
     <div className={styles.landingContainer}>
-        <div className={styles.iconsContainer}>
-            
-            <i className={styles.pointerHover} onClick={()=>addUser()}>
-                <PlusOutlined className={styles.addIcon}/>
-            </i>
+        <div className={styles.iconsAndNameContainer}>
+            <div className={styles.iconsContainer}>
+                
+                <i className={styles.pointerHover} onClick={()=>addUser()}>
+                    <PlusOutlined className={styles.addIcon}/>
+                </i>
 
-            <i className={styles.pointerHover} onClick={()=>notificationBell()}>
-                <BellOutlined  className={styles.bellIcon}/>
-            </i>
-            {/* need to set the users icon on flex start or to the left */}
-            <i className={styles.pointerHover} onClick={()=>showUsers()}>
-                <UserOutlined  className={styles.usersIcon}/>
-            </i>
+                <i className={styles.pointerHover} onClick={()=>notificationBell()}>
+                    <BellOutlined  className={styles.bellIcon}/>
+                </i>
+
+                <i className={styles.pointerHover} onClick={()=>showUsersTable()}>
+                    <UserOutlined  className={styles.usersIcon}/>
+                </i>
+            </div>
+            <div className={styles.usernamaContainer}>
+                <h3 >{loginData.username}</h3>
+            </div>
         </div>
         <Search
             placeholder="input search text"
@@ -87,10 +101,13 @@ function Landing() {
             open={openAddPlace} 
             onCreate={onCreate} 
             onCancel={()=>onCancelAddPlace()}
+            setPlaceData={setPlaceData}
         />
         <LoginModal 
             open={openLogin} 
-            setOpenLogin={setOpenLogin}/>
+            setOpenLogin={setOpenLogin}
+            setLoginData={setLoginData}
+        />
         <Notifications 
             open={showNotificationsModal} 
             onCancel={()=>setShowNotificationsModal(false)} 
@@ -100,6 +117,10 @@ function Landing() {
             open={showAddUserModal} 
             onCancel={()=>setShowAddUserModal(false)} 
             onCreate={()=>setShowAddUserModal(false)}
+        />
+        <Users
+            open={showUsers}
+            onCancel={()=>setShowUsers(false)}
         />
     </div>
   )

@@ -3,7 +3,10 @@ import React from 'react'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './LoginModal.module.css'
 
-function LoginModal({open, setOpenLogin}) {
+function LoginModal({open, setOpenLogin, setLoginData}) {
+  const handleChange = (name, value)=>{
+    setLoginData(prev=>({...prev, [name]:value}))
+  }
   return (
     
     <Modal
@@ -30,7 +33,12 @@ function LoginModal({open, setOpenLogin}) {
           },
         ]}
       >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+        <Input 
+          prefix={<UserOutlined className="site-form-item-icon" />} 
+          placeholder="Username" 
+          name='username'
+          onChange={(e)=>handleChange(e.target.name, e.target.value)}
+        />
       </Form.Item>
       <Form.Item
         name="password"
@@ -45,6 +53,8 @@ function LoginModal({open, setOpenLogin}) {
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"
+          name='password'
+          onChange={(e)=>handleChange(e.target.name, e.target.value)}
         />
       </Form.Item>
         <Form.Item name="remember" valuePropName="checked" className={styles.formItemRemember}>
@@ -59,7 +69,6 @@ function LoginModal({open, setOpenLogin}) {
         <Button type="primary" htmlType="submit" className="login-form-button" block onClick={()=>setOpenLogin(false)}>
           Log in
         </Button>
-        {/* Or <a href="">register now!</a> */}
       </Form.Item>
     </Form>
     </Modal>
