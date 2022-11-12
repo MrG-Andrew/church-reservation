@@ -16,6 +16,9 @@ function LoginModal({open, setOpenLogin, setLoginData}) {
       closable={false}
       footer={null}
     >
+      <div className={styles.logoContainer}>
+        <img src='logo.jpg' alt='logo' className={styles.logo}/>
+      </div>
       <Form
       name="normal_login"
       className="login-form"
@@ -57,12 +60,13 @@ function LoginModal({open, setOpenLogin, setLoginData}) {
           onChange={(e)=>handleChange(e.target.name, e.target.value)}
         />
       </Form.Item>
-        <Form.Item name="remember" valuePropName="checked" className={styles.formItemRemember}>
+        <div name="remember" className={styles.formItemRemember}>
+          
           <Checkbox className={styles.rememberMe}>Remember me</Checkbox>
           <a className={`login-form-forgot ${styles.forgetPass}`} href="/">
             Forgot password
           </a>
-        </Form.Item>
+        </div>
 
 
       <Form.Item className={styles.formItemBtn}>

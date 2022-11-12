@@ -5,7 +5,7 @@
 }
 
 .backgroundImage{
-    background-image: url('../public/bg-01.jpg');
+    background-image: url('../public/background.png');
 }
 
 .container-login100 {
@@ -38,5 +38,5 @@
     height: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255,255,255,0.7);
 }

@@ -1,0 +1,17 @@
+.labelForInput{
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+ }
+ 
+.uploadPhotoInput{
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+ }
+
+ .image{
+    height: 100px;
+    width: 150px;
+ }

@@ -17,7 +17,20 @@ const {Search} = Input
 
 function Landing() {
 
-    const [content, setContent] = useState(0)
+    const defaultAdd = {
+        pictureInForm:'addPlaceImage.png',
+        pictureInContent:'addPlaceImage.png',
+        name:'',
+        rank:0,
+        capacity:0,
+        defaultSchedule:'',
+        closedOn:'DefaultEvents',
+        needApproval:false,
+        hasAC:false,
+        additionalInfo:''
+    }
+
+    const [content, setContent] = useState([])
     const [openAddPlace, setOpenAddPlace] = useState(false)
     const [openLogin, setOpenLogin] = useState(true)
     const [showAddUserModal, setShowAddUserModal] = useState(false)
@@ -27,14 +40,12 @@ function Landing() {
         password:''
     })
     const [showUsers, setShowUsers] = useState(false)
-    const [placeData, setPlaceData] = useState({
-        picture:'',
-        name:'',
-    })
+    const [placeData, setPlaceData] = useState(defaultAdd)
 
     const onCreate = (values) => {
         setOpenAddPlace(false);
-        setContent(prev=>prev+1)
+        console.log(values);
+        setContent(prev=>prev.concat(placeData))
     }
 
     const onCancelAddPlace = ()=>{
@@ -42,6 +53,7 @@ function Landing() {
     }
 
     const plusBtn = ()=>{
+        setPlaceData(defaultAdd)
         setOpenAddPlace(!openAddPlace)
     }
 
@@ -55,6 +67,15 @@ function Landing() {
 
     const showUsersTable = ()=>{
         setShowUsers(!showUsers)
+    }
+
+    const removeCardContent = (content)=>{
+        console.log(content.length);
+        // if(content.length === 1){
+
+        // }else{
+        //     setContent(prev=>prev.pop())
+        // }
     }
 
   return (
@@ -75,33 +96,51 @@ function Landing() {
                 </i>
             </div>
             <div className={styles.usernamaContainer}>
-                <h3 >{loginData.username}</h3>
+                <span className={styles.name}>{loginData.username}</span>
             </div>
         </div>
         <Search
             placeholder="input search text"
             size="large"
             className={styles.searchBox}
+            // enterButton={true}
+            // loading={true}
         />
         <div className={styles.locationsContainer}>
             <div className={styles.card}>
                 <i className={styles.pointerHover} onClick={()=>plusBtn()}>
                     <PlusCircleOutlined className={styles.plusIcon}/>
                 </i>
+                {/* <span>Add Location</span> need to align on bottom of the plus icon or bottom of card */} 
             </div>
-            {Array.from(Array(Number(content)).keys()).map((child, index) => (
+            {/* {Array.from(Array(Number(content)).keys()).map((child, index) => (
                 <div key={index} className={styles.card}>
                     <i className={styles.pointerHover} onClick={()=>setContent(prev=>prev-1)}>
                         <MinusCircleOutlined  className={styles.minusIcon}/>
                     </i>
                 </div>
-            ))}
+            ))} */}
+
+            {content?.map((el,key)=>{return(
+            <div className={styles.imageAndName}>
+            <div key={key} >
+
+                <img src={el.pictureInContent} alt='location pic' className={styles.imageCard}/>
+                {/* <i className={styles.pointerHover} onClick={()=>removeCardContent(content)}>
+                    <MinusCircleOutlined  className={styles.minusIcon}/>
+                </i> */}
+            </div>
+            <span className={styles.locationName}>{el.name}</span>
+            </div>)})}
+            {console.log(content)}
+
         </div>
         <AddPlace 
             open={openAddPlace} 
             onCreate={onCreate} 
             onCancel={()=>onCancelAddPlace()}
             setPlaceData={setPlaceData}
+            placeData={placeData}
         />
         <LoginModal 
             open={openLogin} 

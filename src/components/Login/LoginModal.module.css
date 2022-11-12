@@ -1,6 +1,7 @@
 .formItemRemember{
-    display: flex !important;
-    justify-content: space-between !important;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 0.5rem;
 }
 
 .rememberMe{
@@ -12,4 +13,16 @@
 
 .formItemBtn{
     margin: 0 !important;
+}
+
+.logoContainer{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
+}
+
+.logo{
+    border-radius: 50%;
+    height: 75px;
+    width: 75px;
 }

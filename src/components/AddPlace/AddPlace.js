@@ -1,62 +1,43 @@
 import React,{useState} from 'react'
-import { Form, Input, Modal, Radio, message, Upload } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form, Input, Modal, Image, Checkbox, Select, TimePicker } from 'antd';
 import styles from './AddPlace.module.css'
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-};
 
-function AddPlace({ open, onCreate, onCancel, setPlaceData }) {
+const { Option } = Select;
+
+function AddPlace({ open, onCreate, onCancel, setPlaceData, placeData }) {
 
   const [form] = Form.useForm();
   // const handleChange = (name, value)=>{
   //   setPlaceData(prev=>({...prev, [name]:value}))
   // }
 
-  const handleChange = (info)=>{
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
-    }
-  }
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
 
-  const uploadButton = (
-    <div>
-      {/* need--> loading? <LoadingOutLined/>:<PlusOutLIned/>*/}
-       <PlusOutlined />
-      <div
-        className={styles.uploadTextDiv}
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </div>
-  );
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
+        fileReader.onload = () => {
+            resolve(fileReader.result);
+        };
+
+        fileReader.onerror = (error) => {
+            reject(error);
+        };
+    });
+  };
+
+  const uploadImage = async (event) => {
+    const file = event.target.files[0];
+    const base64 = await convertBase64(file);
+    // console.log(base64);
+    setPlaceData(prev=>{
+      return{
+        ...prev,
+        pictureInForm:URL.createObjectURL(file), 
+        pictureInContent:base64
+    }})
+  };
 
   return (
     <Modal
@@ -65,17 +46,18 @@ function AddPlace({ open, onCreate, onCancel, setPlaceData }) {
         okText="Create"
         cancelText="Cancel"
         onCancel={onCancel}
-        onOk={() => {
-          form
-            .validateFields()
-            .then((values) => {
-              form.resetFields();
-              onCreate(values);
-            })
-            .catch((info) => {
-              console.log('Validate Failed:', info);
-            });
-        }}
+        // onOk={() => {
+        //   form
+        //     .validateFields()
+        //     .then((values) => {
+        //       form.resetFields();
+        //       onCreate(values);
+        //     })
+        //     .catch((info) => {
+        //       console.log('Validate Failed:', info);
+        //     });
+        // }}
+        onOk={values=>onCreate(values)}
       >
         <Form
           form={form}
@@ -86,41 +68,162 @@ function AddPlace({ open, onCreate, onCancel, setPlaceData }) {
           // }}
         >
           <Form.Item
-            name="title"
+            // name="photo"
             label="Image"
+          >
+
+            <label htmlFor="upload-photo" className={styles.labelForInput}>
+              <img
+              src={placeData.pictureInForm}
+              alt='place'
+              className={styles.image}
+              />
+            </label>
+            <input
+              required
+              className={styles.uploadPhotoInput}
+              type="file" 
+              name="photo"
+              accept=".png, .jpg, .jpeg"
+              id="upload-photo"
+              onChange={e=>uploadImage(e)}
+            />
+            
+          </Form.Item>
+
+          <Form.Item 
+            name="name" 
+            label="Name"
             rules={[
               {
                 required: true,
-                message: 'Please input the Image of the location!',
+                message: 'Please input the Name of the location!',
               },
             ]}
-          >
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              //error in action
-              // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              beforeUpload={beforeUpload}
-              onChange={handleChange}
             >
-              {imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt="avatar"
-                  style={{
-                    width: '100%',
-                  }}
-                />
-              ) : (
-                uploadButton
-              )}
-            </Upload>
+            <Input defaultValue={placeData.name} type="textarea" onBlur={e=>setPlaceData(prev=>{
+              return{
+                ...prev,
+                name : e.target.value
+            }})}
+            />
           </Form.Item>
 
-          <Form.Item name="name" label="Name">
-            <Input type="textarea" />
+          <Form.Item 
+            name="rank" 
+            label="Rank"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the Rank of the location!',
+              },
+            ]}
+            >
+            <Select defaultActiveFirstOption={true} type="textarea" onBlur={e=>setPlaceData(prev=>{
+              return{
+                ...prev,
+                rank : e
+            }})}
+            >
+              <Option value={0}>0</Option>
+              <Option value={1}>1</Option>
+              <Option value={2}>2</Option>
+              <Option value={3}>3</Option>
+              <Option value={4}>4</Option>
+              <Option value={5}>5</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item 
+            name="capacity" 
+            label="Capacity"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the Capacity of the location!',
+              },
+            ]}
+            >
+            <Input defaultValue={placeData.capacity} type="textarea" onBlur={e=>setPlaceData(prev=>{
+              return{
+                ...prev,
+                capacity : e.target.value
+            }})}
+            />
+          </Form.Item>
+
+          <Form.Item 
+            name="defaultSchedule" 
+            label="Default Schedule"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the Default Schedule of the location!',
+              },
+            ]}
+            >
+            <TimePicker.RangePicker
+              use12Hours
+              onChange={e=>console.log(e)}
+              bordered={false}
+            />
+          </Form.Item>
+
+          <Form.Item 
+            name="closedOn" 
+            label="Closed on"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the Closed on days of the location!',
+              },
+            ]}
+            >
+            <Select defaultActiveFirstOption={true} type="textarea" onBlur={e=>setPlaceData(prev=>{
+              return{
+                ...prev,
+                rank : e
+            }})}
+            >
+              <Option value='DefaultEvents'>Default Events</Option>
+              <Option value='CustomEvents'>Custom Events</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item 
+            name="needApproval" 
+            label="Needs Approval"
+            >
+            <Checkbox defaultValue={placeData.needApproval} onClick={e=>setPlaceData(prev=>{
+              return{
+                ...prev,
+                needApproval : e.target.checked
+            }})}
+            />
+          </Form.Item>
+
+          <Form.Item 
+            name="hasAC" 
+            label="Has AC"
+            >
+            <Checkbox defaultValue={placeData.hasAC} onClick={e=>setPlaceData(prev=>{
+              return{
+                ...prev,
+                hasAC : e.target.checked
+            }})}
+            />
+          </Form.Item>
+
+          <Form.Item 
+            name="additionalInfo" 
+            label="additionalInfo"
+            >
+            <Input defaultValue={placeData.additionalInfo} type="textarea" onBlur={e=>setPlaceData(prev=>{
+              return{
+                ...prev,
+                additionalInfo : e.target.value
+            }})}
+            />
           </Form.Item>
       
         </Form>

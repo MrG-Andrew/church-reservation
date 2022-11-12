@@ -1,19 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
 .iconsAndNameContainer{
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap-reverse;
+    padding-bottom: 0.3rem;
 }
 
-.iconsContainer{
-
-}
-
-.usernameContainer{
-
+.name{
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: rgb(0, 0, 0);
+    text-shadow: 6px 3px 6px rgba(132, 232, 235, 0.89);
 }
 
 .searchBox{
     width: 100%;
+    border-radius: 5px;
 }
 
 .pointerHover:hover{
@@ -33,7 +36,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 2%;
+    margin: 0.8rem;
+}
+
+.imageCard{
+    width: 100px;
+    height: 100px;
+}
+
+.imageAndName{
+    margin: 0.8rem;
+}
+
+.locationName{
+    
 }
 
 .plusIcon{
